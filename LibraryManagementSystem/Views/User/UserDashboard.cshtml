@@ -1,0 +1,136 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.Book>
+@{
+    ViewBag.Title = "User Dashboard";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container1 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* Default: 4 columns */
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .product-box {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+    }
+
+        .product-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .product-image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .product-details {
+        padding: 15px;
+        text-align: center;
+    }
+
+        .product-details h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-details p {
+            color: #666;
+            font-size: 14px;
+        }
+
+    /* Responsive Design */
+    media screen and (max-width: 1024px) {
+        .container1
+
+    {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+    }
+
+    }
+
+    media screen and (max-width: 768px) {
+        .container1
+
+    {
+        grid-template-columns: repeat(1, 1fr); /* 1 column for mobile */
+    }
+
+    .product-image img {
+        height: 250px; /* Adjust image height for mobile */
+    }
+
+    .product-details h3 {
+        font-size: 16px; /* Smaller font for mobile */
+    }
+
+    }
+
+    /* Style for the search input */
+    #searchInput {
+        width: calc(100% - 110px); /* Adjust width to account for button */
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
+
+<h1 style="text-align:center; margin:20px;">Available Books</h1>
+
+<!-- Search Bar -->
+<div class="mb-3" style="text-align:center;">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search by Title, Author, or Category" />
+    <button class="btn btn-primary mt-2" onclick="searchBooks()">Search</button>
+</div>
+
+<div class="container1" id="bookContainer">
+    @foreach (var book in Model)
+    {
+<div class="product-box">
+    <div class="product-image">
+        <img src="@Url.Content("~/Images/Book1.jpeg")" alt="@book.Title">
+    </div>
+    <div class="product-details">
+        <h3>@book.Title</h3>
+        <p><strong>Author:</strong> @book.Author</p>
+        <p><strong>Year:</strong> @book.PublicationYear</p>
+        <p><strong>Category:</strong> @book.Category.Name</p>
+        <button class="borrow-button" onclick="borrowBook('@book.BookId')">Borrow</button>
+    </div>
+</div>}
+</div>
+
+<script>
+    function borrowBook(bookId) {
+        if (confirm("Are you sure you want to borrow this book?")) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Books/Borrow/" + bookId, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Book borrowed successfully!");
+                        window.location.href = "/Books/BorrowedBooks"; // Redirect to borrowed books page
+                    } else {
+                        alert("Error borrowing book. Please try again.");
+                    }
+                }
+            };
+            xhr.send();
+        }
+    }
+</script>

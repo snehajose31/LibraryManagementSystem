@@ -1,0 +1,44 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.bor>
+
+@{
+    ViewBag.Title = "Borrowed Books";
+}
+
+<h2>Borrowed Books</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>User ID</th>
+            <th>Book Title</th>
+            <th>Borrow Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var bookTitle = GetBookTitle(item.BookId); // Get the book title by its ID
+
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.UserId</td>
+                <td>@bookTitle</td>
+                <td>@item.BorrowDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Borrow a New Book</a>
+
+@functions {
+    /* private string GetBookTitle(int bookId)
+     {
+         var bookList = (SelectList)ViewBag.BookList;
+         var book = bookList.FirstOrDefault(b => b.Value == bookId.ToString());
+         return book?.Text ?? "Unknown"; // Using null-conditional operator
+     }*/
+    
+        }
+}

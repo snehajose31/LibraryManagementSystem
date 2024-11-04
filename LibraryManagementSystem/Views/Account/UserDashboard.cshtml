@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "User Dashboard";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Library Management System</title>
+    <style>
+        /* Full-width header styling */
+        .header-box {
+            background-color: #2578e6; /* Green background */
+            color: white; /* White text */
+            padding: 30px; /* Padding for spacing */
+            border-radius: 5px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Username styling on the left side */
+        .username {
+            margin-left: 20px;
+            font-size: 16px;
+            color: white;
+        }
+
+        /* Centered navigation menu */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            nav ul li {
+                display: inline;
+                margin-right: 15px;
+            }
+
+                nav ul li a {
+                    color: white;
+                    text-decoration: none;
+                }
+
+                    nav ul li a:hover {
+                        text-decoration: underline;
+                    }
+
+        /* Sidebar styling */
+        .sidebar {
+            background-color: #333; /* Dark background */
+            color: white;
+            position: fixed;
+            top: 70px; /* Below the header */
+            left: 0;
+            width: 200px;
+            height: calc(100% - 70px); /* Full height minus header height */
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .sidebar button {
+                background-color: #444;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                margin: 10px 0;
+                width: 80%;
+                cursor: pointer;
+                font-size: 16px;
+                border-radius: 5px;
+                text-align: center;
+            }
+
+                .sidebar button:hover {
+                    background-color: #555;
+                }
+
+        /* Main content offset to not overlap with fixed header and sidebar */
+        .content {
+            margin-top: 70px; /* Adjust to ensure content starts below the header */
+            margin-left: 220px; /* Adjust for sidebar width */
+            padding: 20px; /* Additional padding for content */
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-width Header Section -->
+    <header class="header-box">
+        @{
+            var username = Session["Username"] as string;
+        }
+        @if (!string.IsNullOrEmpty(username))
+        {
+            <div class="username">Hello, @username!</div>
+        }
+
+        <h1>Library Management System</h1>
+
+        <nav>
+            <ul>
+                <li><a href="@Url.Action("Profile", "Account")">Profile</a></li>
+                <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+        <br />
+        <br />
+        <br />
+        <button onclick="location.href='@Url.Action("UserDashboard", "User")'">Book</button>
+        <button onclick="location.href='@Url.Action("Create", "Bor")'">Borrow</button>
+        <button onclick="location.href='@Url.Action("Return", "User")'">Return</button>
+    </aside>
+
+    <!-- Main Content Section -->
+    <main class="content">
+        <h2>Welcome to Your Dashboard</h2>
+        <p></p>
+    </main>
+</body>
+</html>

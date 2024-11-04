@@ -1,0 +1,49 @@
+﻿@model LibraryManagementSystem.Models.BorrowBookk
+
+@{
+    ViewBag.Title = "Borrow Book";
+    string username = Session["Username"] as string; // Get the username from the session
+}
+
+<h2>Borrow Book</h2>
+
+@using (Html.BeginForm("Create", "BorrowBookk", FormMethod.Post)) // Updated the action link
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>BorrowBook</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("Username", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p class="form-control-static">@username</p> <!-- Display the username -->
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookId, "Book", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group">
+               
+                @Html.DropDownList("BookId", (SelectList)ViewBag.Books, "Select a book", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BorrowDate, "Borrow Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BorrowDate, "{:yyyy-MM-dd}", new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.BorrowDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Borrow" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+    
+
+}
